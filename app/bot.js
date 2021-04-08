@@ -165,14 +165,19 @@ class Bot extends EventEmitter{
 		// Artist : type = 8
 		let resArtist = await this.findTracksOnPlex(name, 0, 10, 8);
 		let resAlbums = await this.plex.query(resArtist.MediaContainer.Metadata[0].key);
+		let albumList = 'Adding ' + name + '\'s albums:\n';
 		for(let album of resAlbums.MediaContainer.Metadata) {
+			albumList += '\t';
+			albumList += album.title;
+			albumList += '\n';
 			let resTracks = await this.plex.query(album.key);
 			for(let track of resTracks.MediaContainer.Metadata) {
 				let music = this.trackToMusic(track);
 				this.songQueue.push(music);
 			}
 		}
-		message.reply('add ' + name + '\'s albums to the queue.');
+		albumList += 'tp the queue.';
+		message.reply(albumList);
 		if(!this.isPlaying) {
 			this.playSong(message);
 		}
