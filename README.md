@@ -1,4 +1,5 @@
-Note : this is a personal upgrade of the Plex Discord bot made by danxfisher available here : https://github.com/danxfisher/Plex-Discord-Bot
+Note : This is a personal upgrade of the Plex Didscord bot by irbykk found at: https://github.com/irbyk/Plex-Discord-Bot_V2
+which is a personal upgrade of the Plex Discord bot made by danxfisher available here : https://github.com/danxfisher/Plex-Discord-Bot
 He should have all the credit for starting this project.
 # Plex Discord Bot
 
@@ -32,7 +33,7 @@ If you to use [Docker](https://www.docker.com/) , skip the points 2 and 3.
 
 If want want to use [Docker](https://www.docker.com/), just go to the Docker section.
 
-8. To bring your bot *Online*, navigate to the root of the app (where `index.js` is located) and in your console, type `node index.js`
+8. To bring your bot *Online*, navigate to the root of the app (where `plex-bot.js` is located) and in your console, type `node plex-bot.js`
     * This will start your server.  The console will need to be running for the bot to run.
 
 If I am missing any steps, feel free to reach out or open  an issue/bug in the Issues for this repository.
@@ -80,6 +81,9 @@ Update the `config\keys.js` file with your information:
 
 ```javascript
 module.exports = {
+  'clientId'      : 'DISCORD_CLIENT_ID',
+  'clientSecret'  : 'DISCORD_CLIENT_SECRET',
+  'username'      : 'DISCORD_BOT_USERNAME',
   'botToken'      : 'DISCORD_BOT_TOKEN',
 };
 ```
@@ -89,7 +93,7 @@ And update the `config\plex.js` file with your Plex information:
 ```javascript
 module.exports= {
   'hostname'    : 'PLEX_LOCAL_IP',
-  'port'        : 'PLEX_LOCAL_PORT',
+  'port'        : 'PLEX_LOCAL_PORT'
   'https'       : false,
   'token'       : 'PLEX_TOKEN',
   'managedUser' : 'PLEX_MANAGED_USERNAME',
