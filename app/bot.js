@@ -8,6 +8,7 @@ const config = require('../config/config');
 const xml2json = require('xml2js');
 const request = require('request');
 const language = require('../'+config.language);
+const discordTTS = require('discord-tts');
 	// plex constants ------------------------------------------------------------
 const plexConfig = require('../config/plex');
 const PLEX_PLAY_START = (plexConfig.https ? 'https://' : 'http://') + plexConfig.hostname + ':' + plexConfig.port;
@@ -437,45 +438,49 @@ class Bot extends EventEmitter{
 					self.conn = connection;
 					
 					let url;
-					if(self.songQueue[0].key) {
-						url = PLEX_PLAY_START + self.songQueue[0].key + PLEX_PLAY_END;
+					let DJspeak = 'Now playing ';
+					if(!self.announce) {
+						DJspeak += self.songQueue[0].title;
+						DJspeak += 'as performed by ';
+						DJspeak += self.songQueue[0].artist;
+						self.dispatcher = connection.play(diecordTTS.getVoiceStream(DJspeak)).on('finish', () => {
+							self.announce = true;
+							self.playSong(message);
+						});
 					} else {
-						url = ytdl(self.songQueue[0].url, { quality: 'highestaudio' });
-					}
-					self.isPlaying = true;
-
-					let dispatcherFunc = function() {
-						
-						if (self.songQueue.length > 0) {
-							if(self.songQueue[0].replay) {
-								self.songQueue[0].played = true;
-								self.playSong(message);
-							} else {
-								self.songQueue.shift();
-								if (self.songQueue.length > 0) {
-									self.playSong(message);
-								}
-								// no songs left in queue, continue with playback completion events
-								else {
-									self.isPlaying = false;
-									self.emit('finish', message);
-									self.playbackCompletion(message);
-								}
-							}
+						if(self.songQueue[0].key) {
+							url = PLEX_PLAY_START + self.songQueue[0].key + PLEX_PLAY_END;
 						} else {
-							self.isPlaying = false;
-							self.emit('finish', message);
-							self.playbackCompletion(message);
+							url = ytdl(self.songQueue[0].url, { quality: 'highestaudio' });
 						}
-					};
-					
-					self.dispatcher = connection.play(url).on('finish', dispatcherFunc).on('start', () => {
-							if(!self.songQueue[0].played) {
-								var embedObj = self.songToEmbedObject(self.songQueue[0]);
-								message.channel.send(language.BOT_PLAYSONG_SUCCES, embedObj);
+						self.isPlaying = true;
+
+						let dispatcherFunc = function() {
+						
+							if (self.songQueue.length > 0) {
+								if(self.songQueue[0].replay) {
+									self.songQueue[0].played = true;
+									self.playSong(message);
+								} else {
+									self.songQueue.shift();
+									if (self.songQueue.length > 0) {
+										self.playSong(message);
+									} else { // no songs left in queue, continue with playback completion events
+										self.isPlaying = false;
+										self.emit('finish', message);
+										self.playbackCompletion(message);
+									}
+								}
+							} else {
+								self.isPlaying = false;
+								self.emit('finish', message);
+								self.playbackCompletion(message);
 							}
-					});
-					self.dispatcher.setVolume(self.volume);
+						};
+						
+						self.dispatcher = connection.play(url).on('finish', dispatcherFunc);
+						self.dispatcher.setVolume(self.volume);
+					};
 				});
 			}
 		} else {
