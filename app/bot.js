@@ -176,7 +176,7 @@ class Bot extends EventEmitter{
 				this.songQueue.push(music);
 			}
 		}
-		albumList += 'tp the queue.';
+		albumList += 'to the queue.';
 		message.reply(albumList);
 		if(!this.isPlaying) {
 			this.playSong(message);
