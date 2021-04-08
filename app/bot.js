@@ -443,7 +443,7 @@ class Bot extends EventEmitter{
 						DJspeak += self.songQueue[0].title;
 						DJspeak += 'as performed by ';
 						DJspeak += self.songQueue[0].artist;
-						self.dispatcher = connection.play(diecordTTS.getVoiceStream(DJspeak)).on('finish', () => {
+						self.dispatcher = connection.play(discordTTS.getVoiceStream(DJspeak)).on('finish', () => {
 							self.announce = true;
 							self.playSong(message);
 						});
