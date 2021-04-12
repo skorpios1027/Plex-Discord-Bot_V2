@@ -30,52 +30,18 @@ module.exports = {
 	    if(stoploop > albumList.length) {
 		  stoploop = albumList.length;
 	    }
+		const embedObj = createEmbedObj();
 		let listStart = offset + 1;
-		let reply = 'Available albums (' + listStart + ' of ' + albumList.length + '):\n';
+		let reply = 'Available albums (' + listStart + ' to ' + stoploop + ' of ' + albumList.length + '):\n';
 		for (let i = offset; i < stoploop; i++) {
 		  reply += '\t';
 		  reply += albumList[i];
 		  reply += '\n';
 		}
+		reply += '------------------------------------------------------------------\n';
 		message.channel.send(reply);
 		offset += pageSize;
 	  }
     }
   }
 };
-
-function createEmbedObj() {
-  return {
-    embed: {
-      color: 0x00ff00,
-      description: 'List of song : ',
-      fields: [
-        {
-          name: 'Title',
-          value: '',
-          inline: true
-        }, {
-          name: 'Artist',
-          value: '',
-          inline: true
-        }, {
-          name: 'Album',
-          value: '',
-          inline: true
-        }],
-      footer: {
-        text: '\u2800'.repeat(100)+"|"
-      }
-    }
-  };
-}
-
-function sanitizeEmbedObj(embedObj) {
-  console.dir(embedObj);
-  for(let i = 0; i < embedObj.embed.fields.length; i++ ) {
-    if(embedObj.embed.fields[i].value == '') {
-      embedObj.embed.fields[i].value = '*None*';
-    }
-  }
-  console.dir(embedObj);
-}
