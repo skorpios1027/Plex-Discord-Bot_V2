@@ -54,7 +54,7 @@ class Bot extends EventEmitter{
 				this.voiceChannel = null;
 				this.conn = null;
 				this.cache_library = {};
-				
+				this.announce = false;
 				this.workingTask = 0;
 				this.waitForStart = false;
 				this.waitForStartMessage = null;
@@ -421,8 +421,12 @@ class Bot extends EventEmitter{
 	 */
 	async playSong(message) {		
 		
-		if (this.voiceChannel == null)
-			this.voiceChannel = message.member.voice.channel;
+		if (this.voiceChannel == null){
+			this.voiceChannel = this.client.channels.cache.get(this.config.defaultVChan);
+			if(!this.voiceChannel) {
+				this.voiceChannel = message.member.voice.channel;
+			}
+		}
 
 		if (this.voiceChannel) {
 			this.emit('will play', message);
@@ -439,6 +443,7 @@ class Bot extends EventEmitter{
 					
 					let url;
 					let DJspeak = 'Now playing ';
+console.log(self.announce);
 					if(!self.announce) {
 						DJspeak += self.songQueue[0].title;
 						DJspeak += 'as performed by ';
@@ -455,6 +460,7 @@ class Bot extends EventEmitter{
 						}
 						self.isPlaying = true;
 
+						self.announce = false;
 						let dispatcherFunc = function() {
 						
 							if (self.songQueue.length > 0) {
