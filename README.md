@@ -1,4 +1,4 @@
-Note : This is a personal upgrade of the Plex Didscord bot by irbykk found at: https://github.com/irbyk/Plex-Discord-Bot_V2
+Note : This is a personal upgrade of the Plex Discord bot by irbykk found at: https://github.com/irbyk/Plex-Discord-Bot_V2
 which is a personal upgrade of the Plex Discord bot made by danxfisher available here : https://github.com/danxfisher/Plex-Discord-Bot
 He should have all the credit for starting this project.
 # Plex Discord Bot
@@ -25,7 +25,11 @@ If you to use [Docker](https://www.docker.com/) , skip the points 2 and 3.
 6. Navigate to the `config/plex.js` file and replace the placeholders with your Plex Server information
     1. To get your token, following the instructions here: https://support.plex.tv/hc/en-us/articles/204059436-Finding-an-authentication-token-X-Plex-Token
     2. The identifier, product, version, and deviceName can be anything you want
-7. Once you have the configs set up correctly, you'll need to authorize your bot on a server you have administrative access to.  For documentation, you can read: https://discordapp.com/developers/docs/topics/oauth2#bots.  The steps are as follows:
+7. If it is desired to have a set voice channel for the Bot to play the music on, get the channel ID of the channel you want the bot to operate in.
+	1. In The Discord application go to Settings > Appearance > Check developer mode.
+	2. Right click channel name and copy the channel ID (Copy ID).
+	3. open the 'config/config.js' file and enter the ID into the 'defaultVChan' field.
+8. Once you have the configs set up correctly, you'll need to authorize your bot on a server you have administrative access to.  For documentation, you can read: https://discordapp.com/developers/docs/topics/oauth2#bots.  The steps are as follows:
     1. Go to `https://discordapp.com/api/oauth2/authorize?client_id=[CLIENT ID]&permissions=3197953&scope=bot` where [CLIENT_ID] is the Discord App Client ID
     2. Select **Add a bot to a server** and select the server to add it to
     3. Click **Authorize**
@@ -33,7 +37,7 @@ If you to use [Docker](https://www.docker.com/) , skip the points 2 and 3.
 
 If want want to use [Docker](https://www.docker.com/), just go to the Docker section.
 
-8. To bring your bot *Online*, navigate to the root of the app (where `plex-bot.js` is located) and in your console, type `node plex-bot.js`
+9. To bring your bot *Online*, navigate to the root of the app (where `plex-bot.js` is located) and in your console, type `node plex-bot.js`
     * This will start your server.  The console will need to be running for the bot to run.
 
 If I am missing any steps, feel free to reach out or open  an issue/bug in the Issues for this repository.
